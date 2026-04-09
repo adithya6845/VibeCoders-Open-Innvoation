@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aidAR — Advanced First-Aid Engine</title>
+  <meta name="description" content="AI-powered First-Aid Assistant with 3D anatomy visualization, diagnostic chatbot, and AR contextual guidance for emergency care." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body data-theme="dark">
+
+
+  <!-- PARTICLE ENGINE (BACKGROUND) -->
+  <canvas id="particle-bg" class="particle-canvas"></canvas>
+
+  <!-- ======================================================
+       LANDING PAGE
+       ====================================================== -->
+  <div id="landing-page">
+
+    <!-- TOP STRIP NAV -->
+    <nav class="landing-nav">
+      <div class="landing-logo">aid<span class="logo-ai">AR</span></div>
+      <div class="landing-nav-links">
+        <a href="#features-section-anchor">Features</a>
+        <a href="#tools-section-anchor">Tech Stack</a>
+      </div>
+      <div class="theme-switch-wrapper">
+        <span class="theme-label">LITE_SYS</span>
+        <button class="theme-switch" aria-label="Toggle Lighting">
+          <div class="theme-switch-knob"></div>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ── HERO ──────────────────────────────────── -->
+    <section class="hero">
+      <div class="hero-orb orb-1" data-depth="0.25"></div>
+      <div class="hero-orb orb-2" data-depth="-0.15"></div>
+      <div class="hero-orb orb-3" data-depth="0.1"></div>
+
+      <div class="hero-content">
+        <!-- Left: Big Title Block -->
+        <div class="hero-left">
+          <div class="hero-eyebrow">
+            <div class="logo-dot"></div>
+            <span class="hero-eyebrow-text">Emergency Response System v2.0</span>
+          </div>
+
+          <h1 class="hero-title" data-text="aidAR">aid<span class="hero-title-accent">AR</span></h1>
+          <p class="hero-tagline">First Aid, reinvented.<br>Real-time AI. Immersive 3D.</p>
+
+          <div class="hero-ctas">
+            <button class="btn-primary" id="btn-enter-app" data-magnetic>
+              <div class="btn-icon-circle"></div>
+              Launch Engine
+            </button>
+            <a href="#features-section-anchor" class="btn-secondary">Explore Features ↓</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-chip">
+              <span class="stat-val">3D</span>
+              <span class="stat-label">Anatomy Viewer</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-chip">
+              <span class="stat-val">AI</span>
+              <span class="stat-label">Diagnostic NLP</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-chip">
+              <span class="stat-val">AR</span>
+              <span class="stat-label">Step Guide</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: LCD Monitor Terminal -->
+        <div class="hero-right">
+          <div class="monitor-plate" data-magnetic>
+            <div class="screw screw-tl"></div>
+            <div class="screw screw-tr"></div>
+            <div class="screw screw-bl"></div>
+            <div class="screw screw-br"></div>
+
+            <div class="monitor-bezel">
+              <div class="monitor-dots">
+                <div class="term-dot red"></div>
+                <div class="term-dot amber"></div>
+                <div class="term-dot green"></div>
+                <div class="monitor-title">aidAR — system-boot</div>
+              </div>
+              <div class="lcd-screen-large">
+                <div class="lcd-line dim">━━━ aidAR / BOOT-SEQ v2.0.3 ━━━</div>
+                <div class="lcd-line">→ Three.js Renderer... <span class="ok">✓ ONLINE</span></div>
+                <div class="lcd-line">→ AI Diagnostic NLP... <span class="ok">✓ READY</span></div>
+                <div class="lcd-line">→ AR Narrator TTS...  <span class="ok">✓ ACTIVE</span></div>
+                <div class="lcd-line">→ 3D Orbit Controls.. <span class="ok">✓ ARMED</span></div>
+                <div class="lcd-line">→ Particle Engine...  <span class="ok">✓ 80 pts</span></div>
+                <div class="lcd-line dim">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+                <div class="lcd-line blink-row">ALL SYSTEMS NOMINAL <span class="lcd-cursor"></span></div>
+              </div>
+            </div>
+
+            <!-- Status LED Row -->
+            <div class="monitor-leds">
+              <div class="led-group">
+                <div class="led led-green"></div>
+                <span>POWER</span>
+              </div>
+              <div class="led-group">
+                <div class="led led-amber"></div>
+                <span>PROC</span>
+              </div>
+              <div class="led-group">
+                <div class="led led-green"></div>
+                <span>NET</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT / INTRO BAND ──────────────────────────────── -->
+    <section class="intro-band">
+      <div class="intro-band-inner reveal">
+        <p class="intro-band-text">Built at the intersection of <strong>emergency medicine</strong>, <strong>artificial intelligence</strong>, and <strong>real-time simulation</strong> — aidAR gives you an unflinching, full-sensory tool for practicing life-saving skills.</p>
+      </div>
+    </section>
+
+    <!-- ── FEATURES GRID ───────────────────────────────────── -->
+    <section class="section-block" id="features-section-anchor">
+      <div class="section-header reveal">
+        <div class="section-tag">aidAR Platform</div>
+        <h2>Features</h2>
+        <p>A comprehensive breakdown of the engine capabilities.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          </div>
+          <h3>Procedural 3D Simulations</h3>
+          <p>Perform CPR, hemorrhage control, and airway management on a real-time 3D anatomical model rendered via Three.js WebGL. Every procedure triggers a full geometry shader timeline calculated on the GPU.</p>
+          <div class="feature-tile-tag">Three.js WebGL</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </div>
+          <h3>AI Medical Diagnostic Engine</h3>
+          <p>The AI Doctor interprets loose, natural-language symptom descriptions and routes them to the correct First-Aid protocol. Critical conditions — stroke, cardiac arrest, anaphylaxis — get priority escalation.</p>
+          <div class="feature-tile-tag">Gemini LLM NLP</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+          </div>
+          <h3>Spatial AR Narrator</h3>
+          <p>An always-watching AR tutor that monitors the 3D camera state and selected procedure, injecting real-time contextual voice guidance at every step. Never lose track of what to do next in a crisis.</p>
+          <div class="feature-tile-tag">WebSpeech API</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+          </div>
+          <h3>Skeuomorphic Control Console</h3>
+          <p>Every element is engineered to feel physically real. Metallic gradients, inset LCD panels, drilled screws, magnetic hover physics, and glowing status LEDs — the entire interface is a tactile experience.</p>
+          <div class="feature-tile-tag">GSAP Vengeance UI</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><circle cx="12" cy="12" r="3"></circle><ellipse transform="rotate(60 12 12)" cx="12" cy="12" rx="10" ry="4"></ellipse><ellipse transform="rotate(120 12 12)" cx="12" cy="12" rx="10" ry="4"></ellipse></svg>
+          </div>
+          <h3>Physics Particle Background</h3>
+          <p>A custom-authored canvas particle engine renders ambient floating motes that scatter from your cursor in real-time using vector repulsion math. Adapts seamlessly to Light and Dark modes.</p>
+          <div class="feature-tile-tag">HTML5 Canvas</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </div>
+          <h3>Adaptive Lighting Themes</h3>
+          <p>Full dual-mode theming — switch from burnished Aluminum Light to Stealth Black Titanium Dark at any point, even mid-session inside the app experience. Every variable transitions simultaneously.</p>
+          <div class="feature-tile-tag">CSS Variables</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <h3>Multiplayer Trauma Scenarios</h3>
+          <p>Link up with multiple medical professionals in the same instance via low-latency synchronization protocols. Practice squad-based triage and assigned procedure execution in perfect harmony.</p>
+          <div class="feature-tile-tag">WebRTC Data</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          </div>
+          <h3>VR & XR Headset Ready</h3>
+          <p>Break out of the browser. Push a button and launch the 3D viewer directly into a connected Meta Quest or Apple Vision Pro headset using native browser APIs for full 6DOF spatial immersion.</p>
+          <div class="feature-tile-tag">WebXR API</div>
+        </div>
+
+        <div class="feature-tile cascade-card">
+          <div class="feature-tile-icon" data-magnetic>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          </div>
+          <h3>Dynamic Vital Signs Engine</h3>
+          <p>The patient model is not static. Blood pressure, heart rate, and oxygen saturation degrade or improve algorithmically based on the accuracy and speed of your procedural interventions.</p>
+          <div class="feature-tile-tag">Logic Engine</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TECH STACK GRID ──────────────────────────────────── -->
+    <section class="section-block alt-bg" id="tools-section-anchor">
+      <div class="section-header reveal">
+        <div class="section-tag">AIDAR ARCHITECTURE</div>
+        <h2>Tech Stack</h2>
+        <p>The underlying infrastructure driving the immersive physics.</p>
+      </div>
+
+      <div class="tools-grid-container">
+        <div class="feat-card tool-card" data-feat="0">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" y1="22" x2="12" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" y1="2" x2="12" y2="8.5"></line></svg></span>
+          <h3>Three.js</h3>
+          <p>Real-time 3D WebGL Rendering</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="1">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+          <h3>Vite + TypeScript</h3>
+          <p>Sub-second Hot Reload Build</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="2">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg></span>
+          <h3>GSAP ScrollTrigger</h3>
+          <p>Spring Physics Animations</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="3">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"></path><path d="M12 11V8"></path></svg></span>
+          <h3>Gemini NLP</h3>
+          <p>Medical Symptom Intelligence</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="4">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></span>
+          <h3>OrbitControls</h3>
+          <p>Smooth 3D Camera System</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="5">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></span>
+          <h3>CSS Variables</h3>
+          <p>Full Adaptive Theme Engine</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="6">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></span>
+          <h3>First Aid Protocols</h3>
+          <p>Clinical Emergency Database</p>
+        </div>
+        <div class="feat-card tool-card" data-feat="7">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><circle cx="12" cy="12" r="2"></circle><circle cx="19" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle></svg></span>
+          <h3>Canvas Particles</h3>
+          <p>Physics Mote Engine</p>
+        </div>
+        <div class="feat-card tool-card cascade-magnetic" data-feat="8">
+          <span class="feat-icon" data-magnetic><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></span>
+          <h3>Web Speech API</h3>
+          <p>Real-Time TTS Narration</p>
+        </div>
+        <div class="feat-card tool-card cascade-magnetic" data-feat="9">
+          <span class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></span>
+          <h3>WebVR/XR</h3>
+          <p>Immersive Headset Access</p>
+        </div>
+        <div class="feat-card tool-card cascade-magnetic" data-feat="10">
+          <span class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></span>
+          <h3>WebRTC</h3>
+          <p>Peer-to-Peer Sync Latency</p>
+        </div>
+        <div class="feat-card tool-card cascade-magnetic" data-feat="11">
+          <span class="feat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--lcd-green);"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></span>
+          <h3>WebWorkers</h3>
+          <p>Multi-thread UI Unblocking</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ACCESS TERMINAL ──────────────────────────────────── -->
+    <section class="section-block" id="login-section-anchor">
+      <div class="section-header reveal">
+        <div class="section-tag">SECURE ACCESS</div>
+        <h2>Access Terminal</h2>
+        <p>Authenticate to begin your training session.</p>
+      </div>
+
+      <div class="login-terminal reveal">
+        <div class="terminal-bar">
+          <div class="term-dot red"></div>
+          <div class="term-dot amber"></div>
+          <div class="term-dot green"></div>
+          <div class="term-title">aidAR — secure-shell</div>
+        </div>
+        <div class="terminal-body">
+          <div class="term-label">USER_ID</div>
+          <div class="term-input-wrap">
+            <span class="term-prompt">$</span>
+            <input type="text" class="term-input" placeholder="enter identifier" autocomplete="off" />
+          </div>
+          <div class="term-label">ACCESS_CODE</div>
+          <div class="term-input-wrap">
+            <span class="term-prompt">$</span>
+            <input type="password" class="term-input" placeholder="••••••••••" autocomplete="off" />
+          </div>
+          <button class="btn-login" id="btn-login">AUTHENTICATE &amp; ENTER →</button>
+          <div class="login-skip">
+            No credentials? <a id="skip-login">Skip to demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /landing-page -->
+
+  <!-- ======================================================
+       APP PAGE
+       ====================================================== -->
+  <div id="app-page">
+
+    <div class="app-bg"></div>
+    <div class="app-bg-glow"></div>
+
+    <!-- TOP NAV -->
+    <header id="top-nav">
+      <div class="nav-inner">
+        <div class="logo-text">aid<span class="logo-ai">AR</span></div>
+
+        <div class="nav-tabs">
+          <button class="nav-tab active" data-tab="viewer">3D Viewer</button>
+          <button class="nav-tab" data-tab="doctor">AI Doctor</button>
+          <button class="nav-tab" data-tab="brain">Brain.ai</button>
+          <button class="nav-tab" data-tab="skin">Skin.ai</button>
+        </div>
+
+        <div class="nav-status">
+          <div class="theme-switch-wrapper inline-toggle">
+            <span class="theme-label">LITE_SYS</span>
+            <button class="theme-switch" aria-label="Toggle Lighting">
+              <div class="theme-switch-knob"></div>
+            </button>
+          </div>
+          <span class="status-dot"></span>
+          <span class="sys-active-label">System Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <main id="app-main">
+
+      <!-- 3D VIEWER — fills entire app-main -->
+      <section id="viewer-panel">
+        <div class="viewfinder-frame"></div>
+        <div id="three-canvas-container"></div>
+
+        <div id="viewer-info">
+          <span id="viewer-mode-label">Interactive Mode</span>
+        </div>
+      </section>
+
+      <div id="doctor-overlay" class="diagnostic-overlay">
+        <div class="screw screw-tl"></div>
+        <div class="screw screw-tr"></div>
+        <div class="screw screw-bl"></div>
+        <div class="screw screw-br"></div>
+
+        <div class="doctor-overlay-header diagnostic-header">
+          <span class="doctor-overlay-title">⚕ AI Doctor — Diagnostic Engine</span>
+          <button class="doctor-overlay-close close-overlay" id="close-doctor-overlay">↗ Back to 3D</button>
+        </div>
+        <div id="doctor-messages" class="chat-messages"></div>
+        <div class="chat-input-area">
+          <input type="text" id="doctor-input" class="chat-input" placeholder="Describe symptoms..." autocomplete="off" />
+          <button id="doctor-send" class="send-btn">SEND</button>
+        </div>
+      </div>
+
+      <!-- BRAIN.AI OVERLAY -->
+      <div id="brain-overlay" class="diagnostic-overlay">
+        <div class="screw screw-tl"></div>
+        <div class="screw screw-tr"></div>
+        <div class="screw screw-bl"></div>
+        <div class="screw screw-br"></div>
+
+        <div class="diagnostic-header">
+          <span class="doctor-overlay-title">🧠 Brain.ai — MRI Clinical Analysis</span>
+          <button class="close-overlay" id="close-brain-overlay">↗ Back to 3D</button>
+        </div>
+
+        <div class="diagnostic-body">
+          <div class="diagnostic-left">
+            <div class="upload-zone" id="brain-upload">
+              <input type="file" id="brain-file-input" hidden accept="image/*" />
+              <div class="upload-icon">🔬</div>
+              <p>Upload Brain MRI Scan</p>
+              <img id="brain-preview" class="image-preview" />
+            </div>
+            
+            <div class="diag-form">
+              <div class="form-row">
+                <div class="form-field">
+                  <label>Age</label>
+                  <input type="number" id="brain-age" placeholder="65" />
+                </div>
+                <div class="form-field">
+                  <label>Sex</label>
+                  <select id="brain-sex">
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Clinical Notes</label>
+                <textarea id="brain-notes" placeholder="Relevant symptoms..."></textarea>
+              </div>
+              <button class="btn-analyze" id="analyze-brain-btn">ANALYZE BRAIN MRI →</button>
+            </div>
+          </div>
+          <div class="diagnostic-right" id="brain-results">
+            <div class="empty-results">
+              <p>Upload a scan and provide details to generate analysis.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKIN.AI OVERLAY -->
+      <div id="skin-overlay" class="diagnostic-overlay">
+        <div class="screw screw-tl"></div>
+        <div class="screw screw-tr"></div>
+        <div class="screw screw-bl"></div>
+        <div class="screw screw-br"></div>
+
+        <div class="diagnostic-header">
+          <span class="doctor-overlay-title">✨ Skin.ai — Dermatological Assessment</span>
+          <button class="close-overlay" id="close-skin-overlay">↗ Back to 3D</button>
+        </div>
+
+        <div class="diagnostic-body">
+          <div class="diagnostic-left">
+            <div class="upload-zone" id="skin-upload">
+              <input type="file" id="skin-file-input" hidden accept="image/*" />
+              <div class="upload-icon">📸</div>
+              <p>Upload Skin Lesion Image</p>
+              <img id="skin-preview" class="image-preview" />
+            </div>
+            
+            <div class="diag-form">
+              <div class="form-field">
+                <label>Location</label>
+                <input type="text" id="skin-loc" placeholder="e.g. Left Forearm" />
+              </div>
+              <div class="form-field">
+                <label>Observations</label>
+                <textarea id="skin-notes" placeholder="Color changes, itching, growth..."></textarea>
+              </div>
+              <button class="btn-analyze" id="analyze-skin-btn">ANALYZE LESION →</button>
+            </div>
+          </div>
+          <div class="diagnostic-right" id="skin-results">
+            <div class="empty-results">
+              <p>Upload an image for ABCDE dermatological assessment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDE COLUMN — Contains independent hardware panels -->
+      <aside id="side-column">
+        <!-- Panel 1: AR Narrator -->
+        <div id="narrator-wrapper" class="skeuo-panel-box">
+          <div class="screw screw-tl"></div>
+          <div class="screw screw-tr"></div>
+          <div class="screw screw-bl"></div>
+          <div class="screw screw-br"></div>
+
+          <div class="panel-tabs">
+            <button class="panel-tab active" data-panel="narrator">📡 AR Narrator</button>
+          </div>
+
+          <div id="narrator-panel" class="chat-panel active">
+            <div id="narrator-messages" class="chat-messages">
+              <div class="msg ai">
+                <span class="ai-badge">AR-SYS</span>
+                AR Narrator active. Select a procedure in the 3D Viewer and I will guide you step-by-step.
+              </div>
+            </div>
+            <div class="narrator-status">
+              <span class="status-dot"></span>
+              <span>Watching 3D Viewer…</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Procedures -->
+        <div id="procedure-wrapper" class="skeuo-panel-box">
+          <div class="screw screw-tl"></div>
+          <div class="screw screw-tr"></div>
+          <div class="screw screw-bl"></div>
+          <div class="screw screw-br"></div>
+
+          <div id="animation-controls" class="chat-panel active">
+            <div style="font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.8rem; text-align: center;">Select Procedure</div>
+            <div class="controls-btns">
+              <div class="btn-group">
+                <button id="btn-cpr" class="anim-btn cpr-btn">◆ CPR</button>
+                <button id="btn-bleeding" class="anim-btn bleed-btn">◈ Bleeding</button>
+              </div>
+              <div class="btn-group utility">
+                <button id="btn-reset" class="anim-btn reset-btn">↺ Reset</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <button id="mobile-panel-toggle">☰</button>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

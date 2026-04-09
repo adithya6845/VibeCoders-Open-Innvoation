@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aidAR — AI Doctor Diagnostic Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020305;
+    }
+    
+    #doctor-standalone-container {
+      width: 95%;
+      height: 95%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: #050608;
+      background-image: var(--matte-black);
+      border: 3px solid #1a1e24;
+      border-radius: 24px;
+      box-shadow: 
+        0 40px 120px rgba(0,0,0,0.9), 
+        inset 0 1px 2px rgba(255,255,255,0.1),
+        inset 0 -2px 4px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    .standalone-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid rgba(0,0,0,0.4);
+      background: var(--plate-bg);
+      box-shadow: inset 0 -2px 0 var(--plate-border-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .standalone-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--lcd-green);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(45,255,110,0.3);
+    }
+    
+    .standalone-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .standalone-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--lcd-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(45,255,110,0.8);
+    }
+
+    #doctor-messages {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .chat-input-area {
+      padding: 1.5rem 2rem;
+    }
+    
+    .screw {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: radial-gradient(circle at 30% 30%, #444, #111);
+        border-radius: 50%;
+        box-shadow: 1px 1px 2px rgba(0,0,0,0.8), inset -1px -1px 1px rgba(255,255,255,0.1);
+        z-index: 10;
+    }
+    .screw-tl { top: 15px; left: 15px; }
+    .screw-tr { top: 15px; right: 15px; }
+    .screw-bl { bottom: 15px; left: 15px; }
+    .screw-br { bottom: 15px; right: 15px; }
+    
+    .screw::after {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 8px; height: 1.5px;
+        background: rgba(0,0,0,0.5);
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div id="doctor-standalone-container">
+    <div class="screw screw-tl"></div>
+    <div class="screw screw-tr"></div>
+    <div class="screw screw-bl"></div>
+    <div class="screw screw-br"></div>
+
+    <header class="standalone-header">
+      <div class="standalone-title">⚕ aidAR — AI Diagnostic Terminal</div>
+      <div class="standalone-status">
+        <span class="standalone-dot"></span>
+        SECURE_FEED_ACTIVE
+      </div>
+    </header>
+
+    <div id="doctor-messages" class="chat-messages"></div>
+
+    <div class="chat-input-area">
+      <input type="text" id="doctor-input" class="chat-input" placeholder="Enter symptoms or describe emergency..." autocomplete="off" autofocus />
+      <button id="doctor-send" class="send-btn">SEND_QUERY</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/doctor-main.ts"></script>
+</body>
+</html>

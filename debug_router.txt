@@ -1,0 +1,12 @@
+https://router.huggingface.co/hf-inference/models/epfl-llm/meditron-70b
+404
+Not Found
+---
+https://router.huggingface.co/hf-inference/models/google/medgemma
+404
+Not Found
+---
+https://router.huggingface.co/hf-inference/models/microsoft/BioGPT
+404
+Not Found
+---

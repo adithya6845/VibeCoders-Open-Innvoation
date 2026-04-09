@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedHelp AI · Intelligent Diagnostics</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #030712;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.5);
+      --brain-accent: #8b5cf6;
+      --skin-accent: #ec4899;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --border: rgba(255, 255, 255, 0.1);
+      --glass: rgba(255, 255, 255, 0.03);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+    }
+
+    /* GLASS HEADER */
+    header {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(3, 7, 18, 0.8);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+
+    .logo i {
+      font-style: normal;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-item {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      color: var(--text);
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .view-container {
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .view-container.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HOME VIEW */
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+      background: rgba(17, 24, 39, 0.9);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
+    }
+
+    .card-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .card h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* ANALYSIS MODULES */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 450px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .input-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      position: sticky;
+      top: 100px;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.02);
+      margin-bottom: 2rem;
+    }
+
+    .upload-area:hover {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .upload-area.dragging {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    #preview-img {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* RESULT PANEL */
+    .result-panel {
+      min-height: 600px;
+    }
+
+    .empty-state {
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-muted);
+      border: 1px dashed var(--border);
+      border-radius: 24px;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .loading-state {
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 2rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .report-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      animation: slideIn 0.4s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .risk-level {
+      padding: 0.5rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .risk-low { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .risk-moderate { background: rgba(245, 158, 11, 0.1); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+    .risk-high { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+    .report-section {
+      margin-bottom: 2rem;
+    }
+
+    .report-section h3 {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .report-section h3::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .report-content {
+      line-height: 1.7;
+      color: #d1d5db;
+    }
+
+    .biomarkers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* UTILS */
+    .hidden { display: none; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo" onclick="showView('home')">
+      <i>⚡</i> MedHelp<span>AI</span>
+    </div>
+    <nav class="nav-links">
+      <div class="nav-item" id="nav-home" onclick="showView('home')">Home</div>
+      <div class="nav-item" id="nav-brain" onclick="showView('brain')">Brain.ai</div>
+      <div class="nav-item" id="nav-skin" onclick="showView('skin')">Skin.ai</div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME VIEW -->
+    <div id="home-view" class="view-container active">
+      <div style="text-align: center; margin-bottom: 4rem;">
+        <h1 style="font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: -2px;">Next-Gen Diagnostics</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem;">Select a module to begin your intelligent medical analysis.</p>
+      </div>
+
+      <div class="home-grid">
+        <div class="card" onclick="showView('brain')">
+          <div class="card-badge">Precision</div>
+          <span class="card-icon">🧠</span>
+          <h2>Brain.ai</h2>
+          <p>Advanced MRI analysis for cognitive health, atrophy detection, and neurological risk assessment.</p>
+        </div>
+        <div class="card" onclick="showView('skin')">
+          <div class="card-badge">Real-time</div>
+          <span class="card-icon">✨</span>
+          <h2>Skin.ai</h2>
+          <p>Dermatological assessment using ABCDE criteria for early detection of lesions and skin concerns.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRAIN VIEW -->
+    <div id="brain-view" class="view-container">
+      <div class="app-layout">
+        <div class="input-panel">
+          <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.5rem;">🧠</span> Brain MRI Analysis
+          </h2>
+          
+          <div class="upload-area" id="brain-drop">
+            <input type="file" id="brain-file" class="hidden" accept="image/*" onchange="handleFile(this, 'brain')">
+            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">🔬</span>
+            <p id="brain-upload-text">Upload Brain MRI Scan</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">PNG, JPG or DICOM</p>
+            <img id="brain-preview" class="hidden" style="margin-top: 1rem; border-radius: 12px; max-height: 200px; width: 100%; object-fit: cover;">
+          </div>
+
+          <div class="form-group">
+            <label>Patient Age</label>
+            <input type="number" id="brain-age" placeholder="65">
+          </div>
+          
+          <div class="form-group">
+            <label>Clinical Symptoms</label>
+            <textarea id="brain-notes" placeholder="e.g. Memory loss, confusion, tremors..." rows="3"></textarea>
+          </div>
+
+          <button class="btn-primary" id="brain-analyze-btn" onclick="runAnalysis('brain')" disabled>
+            Analyze MRI Scan <span>→</span>
+          </button>
+        </div>
+
+        <div class="result-panel" id="brain-results">
+          <div class="empty-state">
+            <span style="font-size: 3rem; margin-bottom: 1rem;">📡</span>
+            <h3>Awaiting Input</h3>
+            <p>Upload a brain scan and provide clinical details to generate an AI report.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKIN VIEW -->
+    <div id="skin-view" class="view-container">
+      <div class="app-layout">
+        <div class="input-panel">
+          <h2 style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.5rem;">✨</span> Skin Analysis
+          </h2>
+          
+          <div class="upload-area" id="skin-drop">
+            <input type="file" id="skin-file" class="hidden" accept="image/*" onchange="handleFile(this, 'skin')">
+            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">📸</span>
+            <p id="skin-upload-text">Upload Skin Lesion Image</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">High-res macro photography preferred</p>
+            <img id="skin-preview" class="hidden" style="margin-top: 1rem; border-radius: 12px; max-height: 200px; width: 100%; object-fit: cover;">
+          </div>
+
+          <div class="form-group">
+            <label>Lesion Location</label>
+            <input type="text" id="skin-loc" placeholder="e.g. Left Forearm">
+          </div>
+          
+          <div class="form-group">
+            <label>Observed Changes</label>
+            <textarea id="skin-notes" placeholder="e.g. Growing size, changing color, itching..." rows="3"></textarea>
+          </div>
+
+          <button class="btn-primary" id="skin-analyze-btn" onclick="runAnalysis('skin')" disabled>
+            Analyze Lesion <span>→</span>
+          </button>
+        </div>
+
+        <div class="result-panel" id="skin-results">
+          <div class="empty-state">
+            <span style="font-size: 3rem; margin-bottom: 1rem;">📡</span>
+            <h3>Awaiting Input</h3>
+            <p>Upload a clinical skin image to begin the AI assessment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const CONFIG = {
+      API_KEY: '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',
+      MODEL: 'openai/gpt-4o-mini',
+      BASE_URL: 'https://openrouter.ai/api/v1/chat/completions'
+    };
+
+    let sessionData = {
+      brain: { image: null, type: null },
+      skin: { image: null, type: null }
+    };
+
+    // Navigation
+    function showView(view) {
+      document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById(view + '-view').classList.add('active');
+      const navItem = document.getElementById('nav-' + view);
+      if(navItem) navItem.classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Drag and Drop
+    ['brain', 'skin'].forEach(type => {
+      const area = document.getElementById(type + '-drop');
+      area.onclick = () => document.getElementById(type + '-file').click();
+      
+      area.ondragover = (e) => { e.preventDefault(); area.classList.add('dragging'); };
+      area.ondragleave = () => area.classList.remove('dragging');
+      area.ondrop = (e) => {
+        e.preventDefault();
+        area.classList.remove('dragging');
+        if (e.dataTransfer.files.length) {
+          handleFile({ files: e.dataTransfer.files }, type);
+        }
+      };
+    });
+
+    function handleFile(input, context) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target.result.split(',')[1];
+        sessionData[context].image = base64;
+        sessionData[context].type = file.type;
+
+        // UI Update
+        const preview = document.getElementById(context + '-preview');
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+        document.getElementById(context + '-upload-text').innerText = file.name;
+        document.getElementById(context + '-analyze-btn').disabled = false;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function runAnalysis(mode) {
+      const resultsContainer = document.getElementById(mode + '-results');
+      const btn = document.getElementById(mode + '-analyze-btn');
+      
+      btn.disabled = true;
+      btn.innerText = 'Processing...';
+      
+      resultsContainer.innerHTML = `
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <h2>MedHelp AI is thinking...</h2>
+          <p style="margin-top: 1rem; color: var(--text-muted);">Performing advanced multimodal analysis on image.</p>
+        </div>
+      `;
+
+      const prompt = getPrompt(mode);
+      
+      try {
+        const response = await fetch(CONFIG.BASE_URL, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${CONFIG.API_KEY}`,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'MedHelp AI',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: CONFIG.MODEL,
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  { type: 'text', text: prompt },
+                  {
+                    type: 'image_url',
+                    image_url: {
+                      url: `data:${sessionData[mode].type};base64,${sessionData[mode].image}`
+                    }
+                  }
+                ]
+              }
+            ],
+            response_format: { type: 'json_object' }
+          })
+        });
+
+        const data = await response.json();
+        const result = JSON.parse(data.choices[0].message.content);
+        renderReport(mode, result);
+
+      } catch (error) {
+        console.error(error);
+        resultsContainer.innerHTML = `
+          <div class="empty-state" style="border-color: var(--danger);">
+            <span style="font-size: 3rem;">❌</span>
+            <h3>Analysis Failed</h3>
+            <p>${error.message || 'Check your internet connection and API key.'}</p>
+            <button class="btn-primary" style="width: auto; margin-top: 1rem;" onclick="runAnalysis('${mode}')">Retry</button>
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = mode === 'brain' ? 'Analyze MRI Scan →' : 'Analyze Lesion →';
+      }
+    }
+
+    function getPrompt(mode) {
+      if (mode === 'brain') {
+        const age = document.getElementById('brain-age').value || 'Unknown';
+        const notes = document.getElementById('brain-notes').value || 'None';
+        return `As a specialist neurologist, analyze this Brain MRI scan. 
+          Patient Age: ${age}. Clinical Notes: ${notes}.
+          Respond ONLY in JSON format with the following keys:
+          - risk_level: "Low", "Moderate", or "High"
+          - summary: Executive summary of findings
+          - imaging_findings: Specific observations on atrophy, ventricles, and hippocampi
+          - biomarkers: Array of identified biomarkers/features
+          - next_steps: Array of recommendations
+          - confidence: Percentage confidence (e.g. "92%")`;
+      } else {
+        const loc = document.getElementById('skin-loc').value || 'Unknown';
+        const notes = document.getElementById('skin-notes').value || 'None';
+        return `As a specialist dermatologist, analyze this skin lesion image using the ABCDE criteria.
+          Location: ${loc}. Patient Notes: ${notes}.
+          Respond ONLY in JSON format with the following keys:
+          - risk_level: "Low", "Moderate", or "High"
+          - summary: Overall assessment
+          - abcde_analysis: Detailed breakdown of Asymmetry, Border, Color, Diameter, Evolution
+          - findings: Specific morphological features observed
+          - next_steps: Array of clinical recommendations
+          - confidence: Percentage confidence (e.g. "88%")`;
+      }
+    }
+
+    function renderReport(mode, data) {
+      const now = new Date().toLocaleDateString();
+      const riskClass = 'risk-' + data.risk_level.toLowerCase();
+      const container = document.getElementById(mode + '-results');
+      
+      let extraSection = '';
+      if (mode === 'skin') {
+        extraSection = `
+          <div class="report-section">
+            <h3>ABCDE Assessment</h3>
+            <div class="report-content">${data.abcde_analysis}</div>
+          </div>
+        `;
+      } else {
+        extraSection = `
+          <div class="report-section">
+            <h3>Imaging Details</h3>
+            <div class="report-content">${data.imaging_findings}</div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="report-card">
+          <div class="report-header">
+            <div>
+              <h2 style="font-size: 1.5rem;">${mode.toUpperCase()} AI Diagnosis Report</h2>
+              <p style="color: var(--text-muted); font-size: 0.8rem;">Reference ID: MH-${Math.random().toString(36).substr(2, 6).toUpperCase()} · Date: ${now}</p>
+            </div>
+            <div class="risk-level ${riskClass}">${data.risk_level} Risk</div>
+          </div>
+
+          <div class="report-section">
+            <h3>Executive Summary</h3>
+            <div class="report-content" style="font-size: 1.1rem; color: var(--text);">${data.summary}</div>
+          </div>
+
+          ${extraSection}
+
+          <div class="report-section">
+            <h3>Detected Features</h3>
+            <div class="biomarkers">
+              ${(data.biomarkers || data.findings || []).map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="report-section">
+            <h3>Clinical Recommendations</h3>
+            <div class="report-content">
+              <ul style="padding-left: 1.25rem;">
+                ${data.next_steps.map(s => `<li style="margin-bottom: 0.5rem;">${s}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
+            <strong>Disclaimer:</strong> This is a decision support tool powered by Artificial Intelligence (gpt-4o-mini). Results are probabilistic and for informational purposes only. Do not make medical decisions without consulting a certified physician. Accuracy: ${data.confidence || 'N/A'}.
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+
+</html>
